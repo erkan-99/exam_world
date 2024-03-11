@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <!-- Catalogue Content -->
+    <section id="catalogue-page" class="content">
+        {% if cars %}
+            <h2>Total number of cars: {{ cars|length }}</h2>
+            {% for car in cars %}
+                <div class="car-card">
+                    <img src="{{ car.image_url }}" alt="Car Image">
+                    <p>Type: {{ car.type }}</p>
+                    <p>Model: {{ car.model }}</p>
+                    <a href="{% url 'car-details' car.id %}">Details</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No cars yet</p>
+        {% endif %}
+    </section>
+{% endblock %}

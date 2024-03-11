@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<section id="create-page" class="auth">
+    <form id="edit" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <h1>Edit Car</h1>
+            <label for="type">Type:</label>
+            <select name="type" required id="type">
+                <option value="" {% if car.type == "" %}selected{% endif %}>---------</option>
+                <option value="Rally" {% if car.type == "Rally" %}selected{% endif %}>Rally</option>
+                <option value="Open-wheel" {% if car.type == "Open-wheel" %}selected{% endif %}>Open-wheel</option>
+                <option value="Kart" {% if car.type == "Kart" %}selected{% endif %}>Kart</option>
+                <option value="Drag" {% if car.type == "Drag" %}selected{% endif %}>Drag</option>
+                <option value="Other" {% if car.type == "Other" %}selected{% endif %}>Other</option>
+            </select>
+
+            <label for="model">Model:</label>
+            <input type="text" name="model" value="{{ car.model }}" maxlength="20" required id="model">
+
+            <label for="year">Year:</label>
+            <input type="number" name="year" value="{{ car.year }}" required id="year">
+
+            <label for="image_url">Image URL:</label>
+            <input type="url" name="image_url" value="{{ car.image_url }}" maxlength="200" required id="image_url">
+
+            <label for="price">Price:</label>
+            <input type="number" name="price" value="{{ car.price }}" step="any" required id="price">
+
+            <input class="btn submit" type="submit" value="Edit Car">
+        </div>
+    </form>
+</section>
+{% endblock %}
