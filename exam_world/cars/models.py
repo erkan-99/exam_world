@@ -17,7 +17,7 @@ class Car(models.Model):
     type = models.CharField(max_length=10, choices=CAR_TYPE_CHOICES)
     model = models.CharField(max_length=15)
     year = models.IntegerField(validators=[MinValueValidator(1999), MaxValueValidator(2030)])
-    image_url = models.URLField(unique=True, error_messages={'unique': "This image URL is already in use! Provide a new one."})
+    image_url = models.URLField(null=False, blank=False, unique=True, verbose_name='Image URL')
     price = models.FloatField(validators=[MinValueValidator(1.0)])
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='cars')  # Use the Profile model directly
 

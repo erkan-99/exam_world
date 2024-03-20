@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from exam_world.profiles.models import Profile
+from exam_world.profiles.views import get_first_profile
 
 
 def index(request):
-    user_has_profile = Profile.objects.filter(user=request.user).exists() if request.user.is_authenticated else False
+    profile = get_first_profile()
+    context = {'profile': profile}
 
-    return render(request, 'web/index.html', {'user_has_profile': user_has_profile})
+    return render(request, template_name='web/index.html', context=context)
