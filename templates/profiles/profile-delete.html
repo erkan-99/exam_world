@@ -1,43 +1,18 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'base.html' %}
+
 {% block main_content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'style/style.css' %}" />
-    <title>WorldOfSpeed</title>
-  </head>
+    <section id="create-page" class="auth">
 
-  <body>
-    <div id="box">
-      <header>
-        <!-- Navigation Bar -->
-        <h1>
-          <a class="index-navigation" href="#"
-          ><span>World of Speed</span></a
-        >
-        </h1>
-        <nav>
-      <a href="{% url 'catalogue' %}">Catalogue</a>
-                <a href="{% url 'create_car' %}">Create Car</a>
-                <a href="{% url 'profile_details' %}">Profile</a>
-        </nav>
-      </header>
+        <div class="container">
+            <h1>Are you sure you want to delete your profile?</h1>
+            <!-- Delete Profile Form -->
+            <form id='delete' method="post" action="{% url 'delete-profile' %}">
+                {% csrf_token %}
+                <!-- Confirm Button -->
+                <input class="btn submit" type="submit" value="Yes">
 
-      <!-- profile delete section -->
-      <section id="profile-delete">
-        <h1>Are you sure you want to delete your profile?</h1>
-        <form method="post">
-          {% csrf_token %}
-          <input class="btn submit" type="submit" value="Yes">
-        </form>
-      </section>
-
-      <!-- footer -->
-      <footer>&copy;SoftUni Team 2024. All rights reserved.</footer>
-    </div>
-  </body>
-</html>
+            </form>
+        </div>
+        <!-- End Delete Profile Form -->
+    </section>
 {% endblock %}

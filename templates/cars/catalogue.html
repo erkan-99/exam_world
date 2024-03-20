@@ -1,20 +1,35 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block main_content %}
-    <!-- Catalogue Content -->
-    <section id="catalogue-page" class="content">
-        {% if cars %}
-            <h2>Total number of cars: {{ cars|length }}</h2>
+    {% if not cars %}
+        <!-- Display paragraph: If there are no cars yet-->
+            <p class="no-articles">No cars yet</p>
+
+            <!-- Display a card with information about each car (if any)-->
+    {% else %}
+
+            <section id="catalogue">
+                <h1>Total cars: {{ cars|length }}</h1>
             {% for car in cars %}
-                <div class="car-card">
-                    <img src="{{ car.image_url }}" alt="Car Image">
-                    <p>Type: {{ car.type }}</p>
-                    <p>Model: {{ car.model }}</p>
-                    <a href="{% url 'car-details' car.id %}">Details</a>
-                </div>
+                    <!-- first car-->
+                    <div class="car-card">
+                        <div class="image-wrap">
+                            <!-- car image -->
+                            <img src="{{ car.image_url}}"
+                                 alt="{{ car.type}}">
+                        </div>
+                        <!-- car type -->
+                        <h3>{{ car.type }}</h3>
+                        <!-- car model -->
+                        <h1>{{ car.model }}</h1>
+                        <div class="details-buttons">
+                            <!-- car details button -->
+                            <a href="{% url 'car_details' car.id %}" class="details-btn">Details</a>
+                        </div>
+                    </div>
+
             {% endfor %}
-        {% else %}
-            <p>No cars yet</p>
-        {% endif %}
-    </section>
+
+            </section>
+    {% endif %}
 {% endblock %}

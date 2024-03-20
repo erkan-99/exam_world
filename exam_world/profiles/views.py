@@ -1,12 +1,17 @@
 from pyexpat.errors import messages
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.shortcuts import render, redirect
-
-
-
 from django import forms
+
+from .forms import EditProfileForm, DeleteProfileForm
 from .models import Profile
+from ..cars.models import Car
+
+
+def get_first_profile() -> object:
+    return Profile.objects.first()
 
 
 class ProfileCreationForm(forms.ModelForm):
@@ -34,26 +39,56 @@ def create_profile(request):
         form = ProfileCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('catalogue')
     else:
         form = ProfileCreationForm()
     return render(request, 'profiles/profile-create.html', {'form': form})
 
 
 
-@login_required
 def profile_delete(request):
+    profile = get_first_profile()
+    form = DeleteProfileForm(instance=profile)
+
     if request.method == 'POST':
-        (request.user.delete())
-        return redirect('index')  # Redirect to the index page after deletion
-    return render(request, 'profiles/profile-delete.html')
+        profile.delete()
+        return redirect('index')
+
+    context = {
+        'profile': profile,
+        'form': form,
+    }
+
+    return render(request, 'profiles/profile-delete.html', context)
 
 
-@login_required
-def profile_delete(request):
+def profile_edit(request):
+
+    profile = get_first_profile()
+
+    form = EditProfileForm(instance=profile)
     if request.method == 'POST':
-        # Delete the profile and associated cars
-        request.user.delete()
-        messages.success(request, 'Your profile has been deleted.')
-        return redirect('index')  # Redirect to the index page after deletion
-    return render(request, 'profiles/profile-delete.html')
+        form = EditProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile-details')
+
+    context = {
+        'profile': profile,
+        'form': form,
+    }
+    return render(request, 'profiles/profile-edit.html', context)
+
+
+def profile_details(request):
+    profile = get_first_profile()
+    total_sum = Car.objects\
+        .filter(owner=profile, owner__isnull=False)\
+        .aggregate(total_price=Sum('price'))['total_price'] or 0
+
+    context = {
+        'profile': profile,
+        'total_sum': total_sum
+    }
+
+    return render(request, template_name='profiles/profile-details.html', context=context)

@@ -1,47 +1,17 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'base.html' %}
+
 {% block main_content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'style/style.css' %}" />
-    <title>WorldOfSpeed</title>
-  </head>
-
-  <body>
-    <div id="box">
-      <header>
-        <!-- Navigation Bar -->
-        <h1>
-          <a class="index-navigation" href="#"
-          ><span>World of Speed</span></a
-        >
-        </h1>
-        <nav>
-            <<a href="{% url 'catalogue' %}">Catalogue</a>
-            <a href="{% url 'create_car' %}">Create Car</a>
-            <a href="{% url 'profile_details' %}">Profile</a>
-        </nav>
-      </header>
-
-      <!-- edit profile form -->
-      <section id="register-page" class="content auth">
+    <!-- edit profile form -->
+    <section id="register-page" class="content auth">
         <form id="register" method="post">
-          {% csrf_token %}
-          <div class="container">
-            <h1>Edit Profile</h1>
-            {{ form.as_p }}
-            <!-- Edit Button -->
-            <input class="btn" type="submit" value="Edit Profile" />
-          </div>
-        </form>
-      </section>
+            <div class="container">
+                <h1>Edit Profile</h1>
 
-      <!-- footer -->
-      <footer>&copy;SoftUni Team 2024. All rights reserved.</footer>
-    </div>
-  </body>
-</html>
+                {% csrf_token %}
+                {{ form }}
+
+                <input class="btn" type="submit" value="Edit Profile">
+            </div>
+        </form>
+    </section>
 {% endblock %}
